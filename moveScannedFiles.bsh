@@ -1,0 +1,27 @@
+#!/bin/bash
+echo "Moving files from the scanned folder..."
+SCAN_DIR=/home/kestrel/scanned/
+#if there are files for us to move
+if [ 0 -ne `ls $SCAN_DIR | wc -l` ]
+then
+	echo "Moving files."
+	#fix permissions
+	chown -R jeffrey:family $SCAN_DIR*
+	chmod -R 770 $SCAN_DIR*
+	cd $SCAN_DIR
+	for f in *
+	do
+		if ! lsof -- $f ; then
+			#weird stuff to get the file extension
+			filename=$(basename -- "$f")
+			extension="${filename##*.}"
+			mv -n "$f" "/home/jeffrey/docs/shared/scanned/scanned-$(date -r "$f" +"%Y%m%d_%H%M%S").$extension"
+		else
+			echo "$f is currently being written to; will be moved on the next cycle."
+		fi
+	done
+else
+	echo "No files to move."
+
+fi
+
