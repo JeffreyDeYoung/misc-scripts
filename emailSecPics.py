@@ -41,9 +41,9 @@ def sendEmailWithAttachments(files):
                 		fil.read(),
                 		Name=basename(f)
             		)
-        # After the file is closed
-        part['Content-Disposition'] = 'attachment; filename="%s"' % basename(f)
-        msg.attach(part)
+            # After the file is closed
+            part['Content-Disposition'] = 'attachment; filename="%s"' % basename(f)
+            msg.attach(part)
 	msg.add_header('From', email_from)
 	msg['Subject'] = msg_str
 	to = [] # declare that we're using an array for the "TO:" list
